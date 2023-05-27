@@ -1,0 +1,20 @@
+# depslib dependency file v1.0
+1684111243 source:c:\users\administrator\desktop\operating system\main.c
+	<stdio.h>
+	<stdlib.h>
+
+1685176678 source:e:\c语言课程设计\operating system\main.c
+	<stdio.h>
+	<stdlib.h>
+	"Os.h"
+
+1685176248 source:e:\c语言课程设计\operating system\os.c
+	"Os.h"
+	<stdio.h>
+	<stdlib.h>
+	<stdbool.h>
+	<string.h>
+
+1685173578 e:\c语言课程设计\operating system\os.h
+	<stdbool.h>
+
