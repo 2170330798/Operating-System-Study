@@ -9,9 +9,9 @@ int main()
     create_area();
     read_area();
     //display(area,NULL,"FreeArea");
-    firstfit();
+    //firstfit();
     //bestfit();
-    //worstfit();
+    worstfit();
     retrieve();
     display(area,NULL,"FreeArea");
     display(NULL,thread,"Thread");

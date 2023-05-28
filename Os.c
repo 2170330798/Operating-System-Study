@@ -277,7 +277,9 @@ void nextfit()
 
 void retrieve()//回收机制
 {
-    FreeArea *p = area->fnext,*p2 = NULL,*p3 = NULL,*p4 = NULL,*next = NULL;
+    FreeArea *p = area->fnext,*p2 = NULL,
+             *p3 = NULL,*p4 = NULL,*next = NULL;
+
     //1
     while(p)
     {
@@ -289,7 +291,6 @@ void retrieve()//回收机制
             {
                 p3 = p2;
                 p2->pre->area_size += p2->area_size;
-                p2->status = FREE;
                 p2->pre->fnext = p2->fnext;
                 p2->fnext->pre = p2->pre;
                 free(p3);
@@ -301,7 +302,7 @@ void retrieve()//回收机制
                 p2->fnext->fnext->pre = p2;
                 free(p3);
             }
-            else if(p2->fnext != NULL && p2->pre != NULL && p2->status == USED)
+            else if(p2->fnext != NULL && p2->pre != NULL)
             {
                 p3 = p2;
                 p4 = p2->fnext;
@@ -311,28 +312,48 @@ void retrieve()//回收机制
                 free(p3);
                 free(p4);
             }
-            /*
             else
             {
-                p2 = p;
-                while(p2)
-                {
-                    if(p2->area_size == 0 )
-                    {
-                        if(p2->address == 100 && p2->pre->status == USED)
-                        {
-                            p3 = p2;
-                            p3->pre->area_size += p3->area_size;
-                            p3->pre->fnext = p3->fnext;
-                            p3->fnext->pre = p3->pre;
-                            free(p3);
-                        }
-                    }
+                FreeArea *newfree = (FreeArea*)malloc(sizeof(FreeArea));
+                newfree->address = &(newfree);
+                newfree->area_size = sizeof(newfree);
+                newfree->fnext = NULL;
+                //寻找合适区域
+                while(p2){
+                        if(p2->area_size == 0) break;
                     p2 = p2->fnext;
+                }
+                if(p2->pre != NULL && p2->status == FREE){
+                    p3 = p2;
+                    p2->pre->area_size += p2->area_size;
+                    p2->status = FREE;
+                    p2->pre->fnext = p2->fnext;
+                    p2->fnext->pre = p2->pre;
+                    free(p3);
+                    if(p2->fnext != NULL){
+                       p3 = p2->fnext;
+                       p2 = p2->fnext->fnext;
+                       p2->fnext->fnext->pre = p2;
+                       free(p3);
+                    }
+                }else if(p2->fnext != NULL){
+                       p3 = p2->fnext;
+                       p2 = p2->fnext->fnext;
+                       p2->fnext->fnext->pre = p2;
+                       free(p3);
+
+                }else{
+                       if(p2->area_size == 0){
+                           while(p2){
+                             p2 = p2->fnext;
+                           }
+                           p2->fnext = newfree;
+                           p2 = newfree;
+                       }
                 }
 
             }
-            */
+
         }
         p = next;
     }
